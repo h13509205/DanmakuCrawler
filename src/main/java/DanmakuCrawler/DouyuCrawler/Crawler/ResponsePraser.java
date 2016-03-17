@@ -37,7 +37,7 @@ public class ResponsePraser {
 	     return String.format("type@=joingroup/rid@=%d/gid@=%d/", rid, gid);
 	 }
 
-	 public static String keepLive(int tick) {
+	 public static String keepLive(long tick) {
 	     return String.format("type@=keeplive/tick@=%d/", tick);
 	 }
 	 
@@ -48,10 +48,16 @@ public class ResponsePraser {
 	 private static final String REGEX_DANMAKU_SERVER = "/ip@=(.*?)/port@=(\\d*?)/";
 	 private static final String REGEX_CHAT_DANMAKU = "type@=chatmessage/.*/sender@=(\\d.*?)/content@=(.*?)/snick@=(.*?)/.*/rid@=(\\d*?)/";
 	 private static final String REGEX_USERNAME = "/username@=(.*?)/nickname";
+	 private static final String REGEX_ERROR = "type@=error/";
 	 
 	 private static Matcher getMatcher(String content, String regex) {
 	     Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
 	     return pattern.matcher(content);
+	 }
+	 
+	 public static boolean isError(String content) {
+		 Matcher matcher = getMatcher(content, REGEX_ERROR);
+		 return matcher.find();
 	 }
 	 
 	 /**
