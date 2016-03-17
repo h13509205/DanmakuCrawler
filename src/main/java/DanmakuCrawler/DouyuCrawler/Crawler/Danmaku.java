@@ -4,27 +4,28 @@ import java.util.Date;
 
 public class Danmaku {
 	private int uid;//用户id
-    private String snick;//昵称
+    private String nickname;//昵称
     private String content;//内容
-    private Date date;//发布时间
+    private long curr;//发布时间
+    private String cid;//弹幕唯一编号
     private int rid;//房间号
 
-    public Danmaku(int uid, String snick, String content, int rid) {
+    public Danmaku(int rid, int uid, String nn, String txt, String cid) {
         this.uid = uid;
-        this.snick = snick;
-        this.content = content;
-        this.date = new Date();
+        this.nickname = nn;
+        this.content = txt;
+        this.curr = System.currentTimeMillis();
         this.rid = rid;
+        this.cid = cid;
     }
 
-    @Override
-    public String toString() {
-        return "Danmaku{" +
-                "uid=" + uid +
-                ", snick='" + snick + '\'' +
-                ", content='" + content + '\'' +
-                ", date=" + date +
-                ", rid=" + rid +
-                '}';
+    public void tostring() {
+    	System.out.println("rid:"+rid);
+    	System.out.println("uid:"+uid);
+    	System.out.println("nickname:"+nickname);
+    	System.out.println("content:"+content);
+    	System.out.println("curr:"+curr);
+    	System.out.println("cid:"+cid);
+    	System.out.println();
     }
 }

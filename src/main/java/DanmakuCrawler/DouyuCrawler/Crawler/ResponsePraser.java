@@ -46,7 +46,7 @@ public class ResponsePraser {
 	 private static final String REGEX_SERVER = "%7B%22ip%22%3A%22(.*?)%22%2C%22port%22%3A%22(.*?)%22%7D%2C";
 	 private static final String REGEX_GROUP_ID = "type@=setmsggroup.*/rid@=(\\d*?)/gid@=(\\d*?)/";
 	 private static final String REGEX_DANMAKU_SERVER = "/ip@=(.*?)/port@=(\\d*?)/";
-	 private static final String REGEX_CHAT_DANMAKU = "type@=chatmessage/.*/sender@=(\\d.*?)/content@=(.*?)/snick@=(.*?)/.*/rid@=(\\d*?)/";
+	 private static final String REGEX_CHAT_DANMAKU = "type@=chatmsg/rid@=(\\d.*?)/uid@=(\\d.*?)/nn@=(.*?)/txt@=(.*?)/cid@=(.*?)/";
 	 private static final String REGEX_USERNAME = "/username@=(.*?)/nickname";
 	 private static final String REGEX_ERROR = "type@=error/";
 	 
@@ -146,17 +146,22 @@ public class ResponsePraser {
 	     Danmaku danmaku = null;
 	     if (matcher.find()) {
 	     	danmaku = new Danmaku(Integer.parseInt(matcher.group(1)),
-	     	matcher.group(3),
-	    	matcher.group(2),
-	    	Integer.parseInt(matcher.group(4)));
+	     			Integer.parseInt(matcher.group(2)),		
+	     			matcher.group(3),
+	     			matcher.group(4),
+	     			matcher.group(5));
 	     }
 	     return danmaku;
 	 }
 	 
 	 public static void main(String[] args) {
-		 String devid = "DF9E4515E0EE766B39F8D8A2E928BB7C";
-		 String rt = "1453795822";
-		 System.out.println(DigestUtils.md5Hex(rt+"7oE9nPEG9xXV69phU31FYCLUagKeYtsF"+devid));
+		 String s = "type@=chatmsg/rid@=335166/uid@=35412018/nn@=shuaiguaixia/txt@=666/cid@=8935f21cb97945442632010000000000/level@=3/";
+		 String regex = "type@=chatmsg/rid@=(\\d.*?)/uid@=(\\d.*?)/nn@=(.*?)/txt@=(.*?)/cid@=(.*?)/";
+		 Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+		 Matcher matcher = pattern.matcher(s);
+		 System.out.println(matcher.find());
+		 //Danmaku a = getDanmaku(s);
+		 //a.tostring();
 		
 	}
 }

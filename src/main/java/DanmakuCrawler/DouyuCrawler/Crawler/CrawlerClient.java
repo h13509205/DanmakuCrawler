@@ -15,7 +15,7 @@ public class CrawlerClient extends Thread {
     private String username;
     private int room_id = -1;
     private int group_id = -1;
-    private boolean isOnline;
+    private boolean isOnline = true;
     private Socket loginSocket;
     private Socket danmakuSocket;
     
@@ -29,13 +29,15 @@ public class CrawlerClient extends Thread {
     public void run() {
     	super.run();
     	try{
-    		loginDanmakuServer();
     		
-    		KeepaliveThread keepalive = new KeepaliveThread(loginSocket);
-    	    keepalive.start();
+    			loginDanmakuServer();
+    		
+    			KeepaliveThread keepalive = new KeepaliveThread(loginSocket);
+    			keepalive.start();
     	    
-    	    getDammaku();
-    	    keepalive.flag = false;
+    			getDammaku();
+    			keepalive.flag = false;
+    		
     	}catch(Exception e) {
     		e.printStackTrace();
     	}finally{
@@ -50,6 +52,7 @@ public class CrawlerClient extends Thread {
     		loginServer = ResponsePraser.getLoginServer(pageHtml);
     		isOnline = ResponsePraser.isOnline(pageHtml);
     		loginSocket = new Socket(loginServer.host, loginServer.port);
+    		System.out.println(loginServer.host+":"+loginServer.port);
     		Reader reader = new InputStreamReader(loginSocket.getInputStream());
     		MessageHandler.send(loginSocket, ResponsePraser.loginContent(room_id));
     		char chars[] = new char[1024];		
@@ -61,6 +64,7 @@ public class CrawlerClient extends Thread {
     	    
     	    username = ResponsePraser.getUsername(s1);
     	    group_id = ResponsePraser.getGid(s2);
+    	    System.out.println(username+":"+group_id);
     	}catch(Exception e) {
     		e.printStackTrace();
     	}
@@ -79,9 +83,10 @@ public class CrawlerClient extends Thread {
     	    		if(ResponsePraser.isError(s4)){
     	    			break;
     	    		}
+    	    		//System.out.println(s4);
     	    		Danmaku a = ResponsePraser.getDanmaku(s4);
     	    		if(a != null) {
-    	    			System.out.println(a.toString());
+    	    			a.tostring();
     	    		}
     	    	}
     	    }
@@ -92,7 +97,7 @@ public class CrawlerClient extends Thread {
     }
     
     public static void main(String[] args) throws Exception {
-		CrawlerClient a = new CrawlerClient("/yifuleiya");
+		CrawlerClient a = new CrawlerClient("/xiaocang");
 		a.start();
 	}
 }
